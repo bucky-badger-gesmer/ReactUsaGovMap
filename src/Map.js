@@ -1,6 +1,8 @@
 import React from 'react';
 import USAMap from 'react-usa-map';
 
+require('./Map.css');
+
 export default class Map extends React.Component {
     mapHandler = (event) => {
         alert(event.target.dataset.name);
@@ -8,7 +10,12 @@ export default class Map extends React.Component {
 
     render() {
         return (
-            <USAMap defaultFill={'gold'} onClick={this.mapHandler} />
+            <div>
+                <h1>USA!</h1>
+                <div className="usa-map">
+                    <USAMap defaultFill={'gold'} onClick={this.mapHandler} />
+                </div>
+            </div>
         );
     }
 }
