@@ -25,7 +25,7 @@ export default class Map extends React.Component {
     }
 
     render() {
-        console.log('fuck me', this.state)
+        console.log('map render', this.state)
         return (
             <div>
                 <h1>USA!  <FontAwesomeIcon icon={faCog} /></h1>
