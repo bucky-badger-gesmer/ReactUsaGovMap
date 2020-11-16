@@ -6,15 +6,18 @@ import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { Popup } from 'semantic-ui-react';
 import { Modal, Button } from 'react-bootstrap';
 import { states } from './Helper';
+import StateGovInfo from './StateGovInfo';
 require('./Map.css');
 
 export default function Map() {
     const [mapColor, setMapColor] = useState('#FFD701');
     const [selectedState, setSelectedState] = useState(null);
+    const [selectedStateAbbr, setSelectedStateAbbr] = useState(null);
     const [show, setShow] = useState(false);
 
     const mapHandler = event => {
         const stateName = states[event.target.dataset.name];
+        setSelectedStateAbbr(event.target.dataset.name)
         setSelectedState(stateName);
         setShow(true);
     };
@@ -25,6 +28,28 @@ export default function Map() {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const handleGet = () => {
+        console.log('handle get', selectedStateAbbr, selectedState)
+        fetch('https://api.propublica.org/congress/v1/116/House/members.json', {
+            headers: {
+                'x-api-key': 'jGxfPjMYvOkeKZX2YlPvaK4FctW2Vzj1Makj66vR'
+            }
+        }).then(resp => resp.json())
+        .then(resp => {
+            let reps = [];
+            resp.results[0].members.forEach(member => {
+                if (member.state === selectedStateAbbr) {
+                    reps.push(member);
+                }
+            });
+
+            // sorts them by ascending districts:
+            reps = reps.sort((a, b) => a.district - b.district);
+
+            console.log('reps', reps)
+        });
+    };
 
     const icon = <FontAwesomeIcon style={{ float: 'right', marginRight: '50px' }} icon={faCog} />;
     const colorPicker = <SketchPicker color={mapColor} onChangeComplete={handleChangeComplete} />;
@@ -43,13 +68,14 @@ export default function Map() {
                 <Modal.Header closeButton>
                     <Modal.Title>{selectedState}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                <Modal.Body>
+                    Woohoo, you're reading this text in a modal!
+                    <Button variant="primary" onClick={handleGet}>GET SOME DATA!</Button>
+                    {/* <StateGovInfo stateAbb={selectedStateAbbr} /> */}
+                </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         Close
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
                     </Button>
                 </Modal.Footer>
             </Modal>
