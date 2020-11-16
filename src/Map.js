@@ -51,6 +51,19 @@ export default function Map() {
         });
     };
 
+    /* optional customization of filling per state and calling custom callbacks per state */
+    const statesCustomConfig = () => {
+        return {
+            "NJ": {
+                fill: "navy",
+                clickHandler: (event) => console.log('Custom handler for NJ', event.target.dataset)
+            },
+            "NY": {
+                fill: "#CC0000"
+            }
+        };
+    };
+
     const icon = <FontAwesomeIcon style={{ float: 'right', marginRight: '50px' }} icon={faCog} />;
     const colorPicker = <SketchPicker color={mapColor} onChangeComplete={handleChangeComplete} />;
     const popup = <Popup
@@ -59,19 +72,18 @@ export default function Map() {
                     on='click' />;
 
     return (
-        <div>
-            <h1>USA!{popup}</h1>
+        <div className="app-container">
+            <h1>Who Represents You In Congress?{popup}</h1>
             <div className="usa-map">
-                <USAMap defaultFill={mapColor} onClick={mapHandler} />
+                <USAMap defaultFill={mapColor} onClick={mapHandler} customize={statesCustomConfig()} />
             </div>
             <Modal show={show} onHide={handleClose} size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>{selectedState}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Woohoo, you're reading this text in a modal!
-                    <Button variant="primary" onClick={handleGet}>GET SOME DATA!</Button>
-                    {/* <StateGovInfo stateAbb={selectedStateAbbr} /> */}
+                    {/* <Button variant="primary" onClick={handleGet}>GET SOME DATA!</Button> */}
+                    <StateGovInfo stateAbb={selectedStateAbbr} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
