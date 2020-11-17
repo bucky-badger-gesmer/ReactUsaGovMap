@@ -29,39 +29,18 @@ export default function Map() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const handleGet = () => {
-        console.log('handle get', selectedStateAbbr, selectedState)
-        fetch('https://api.propublica.org/congress/v1/116/House/members.json', {
-            headers: {
-                'x-api-key': 'jGxfPjMYvOkeKZX2YlPvaK4FctW2Vzj1Makj66vR'
-            }
-        }).then(resp => resp.json())
-        .then(resp => {
-            let reps = [];
-            resp.results[0].members.forEach(member => {
-                if (member.state === selectedStateAbbr) {
-                    reps.push(member);
-                }
-            });
-
-            // sorts them by ascending districts:
-            reps = reps.sort((a, b) => a.district - b.district);
-
-            console.log('reps', reps)
-        });
-    };
-
     /* optional customization of filling per state and calling custom callbacks per state */
     const statesCustomConfig = () => {
-        return {
-            "NJ": {
-                fill: "navy",
-                clickHandler: (event) => console.log('Custom handler for NJ', event.target.dataset)
-            },
-            "NY": {
-                fill: "#CC0000"
-            }
-        };
+        // return {
+        //     "NJ": {
+        //         fill: "navy",
+        //         clickHandler: (event) => console.log('Custom handler for NJ', event.target.dataset)
+        //     },
+        //     "NY": {
+        //         fill: "#CC0000"
+        //     }
+        // };
+        return {};
     };
 
     const icon = <FontAwesomeIcon style={{ float: 'right', marginRight: '50px' }} icon={faCog} />;
@@ -70,6 +49,14 @@ export default function Map() {
                     trigger={icon}
                     content={colorPicker}
                     on='click' />;
+    
+    const icon1 = <FontAwesomeIcon style={{ float: 'right', marginRight: '50px' }} icon={faCog} />;
+    const colorPicker1 = <SketchPicker color={mapColor} onChangeComplete={handleChangeComplete} />;
+    const popup1 = <Popup
+                    style={{ zIndex: 9999999 }}
+                    trigger={icon}
+                    content={colorPicker}
+                    on='click' />;               
 
     return (
         <div className="app-container">
@@ -77,12 +64,13 @@ export default function Map() {
             <div className="usa-map">
                 <USAMap defaultFill={mapColor} onClick={mapHandler} customize={statesCustomConfig()} />
             </div>
-            <Modal show={show} onHide={handleClose} size="lg">
+            <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{selectedState}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {/* <Button variant="primary" onClick={handleGet}>GET SOME DATA!</Button> */}
+                    {/* {popup1} */}
                     <StateGovInfo stateAbb={selectedStateAbbr} />
                 </Modal.Body>
                 <Modal.Footer>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Member from './Member';
 
 export default function StateGovInfo(props) {
     const [representatives, setRepresentatives] = useState(null);
@@ -14,6 +15,8 @@ export default function StateGovInfo(props) {
         .then(resp => {
             let senators = [];
             senators = resp.results[0].members.filter(member => member.state === props.stateAbb);
+            senators = senators.sort((a, b) => a.title > b.title ? 1 : -1);
+
             setSenators(senators);
         });
 
@@ -39,12 +42,12 @@ export default function StateGovInfo(props) {
     }, []);
     
     return (
-        <div>
+        <div style={{ height: '500px', overflowY: 'scroll' }}>
             <h3>Senators</h3>
             {senators && 
                 <ul>
                     {senators.map(o => {
-                        return <li>{o.first_name}</li>
+                        return <li>({o.party}) {o.first_name} {o.last_name}, {o.title}</li>
                     })}
                 </ul>
             }
@@ -52,10 +55,11 @@ export default function StateGovInfo(props) {
             {representatives &&
                 <ul>
                     {representatives.map(o => {
-                        return <li>{o.first_name}</li>
+                        return <li>({o.party}) {o.first_name} {o.last_name}</li>
                     })}
                 </ul>
             }
+            <Member />
         </div>
     );
 }
