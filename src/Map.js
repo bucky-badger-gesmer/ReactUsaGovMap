@@ -14,6 +14,8 @@ export default function Map() {
     const [selectedState, setSelectedState] = useState(null);
     const [selectedStateAbbr, setSelectedStateAbbr] = useState(null);
     const [show, setShow] = useState(false);
+    // const [selectedStateColor, setSelectedStateColor] = useState('#FFD701');
+    // const [statesColorConfig, setStatesColorConfig] = ([]);
 
     const mapHandler = event => {
         const stateName = states[event.target.dataset.name];
@@ -34,7 +36,6 @@ export default function Map() {
         // return {
         //     "NJ": {
         //         fill: "navy",
-        //         clickHandler: (event) => console.log('Custom handler for NJ', event.target.dataset)
         //     },
         //     "NY": {
         //         fill: "#CC0000"
@@ -43,6 +44,15 @@ export default function Map() {
         return {};
     };
 
+    // const handleSelectedStateColorChange = color => {
+    //     setSelectedStateColor(color.hex);
+    //     console.log('stuff', selectedState, selectedStateAbbr, selectedStateColor, statesColorConfig);
+    //     statesColorConfig.push({
+    //         selectedStateAbbr: selectedStateColor
+    //     });
+    //     setStatesColorConfig(statesColorConfig);
+    // };
+
     const icon = <FontAwesomeIcon style={{ float: 'right', marginRight: '50px' }} icon={faCog} />;
     const colorPicker = <SketchPicker color={mapColor} onChangeComplete={handleChangeComplete} />;
     const popup = <Popup
@@ -50,13 +60,15 @@ export default function Map() {
                     content={colorPicker}
                     on='click' />;
     
-    const icon1 = <FontAwesomeIcon style={{ float: 'right', marginRight: '50px' }} icon={faCog} />;
-    const colorPicker1 = <SketchPicker color={mapColor} onChangeComplete={handleChangeComplete} />;
-    const popup1 = <Popup
-                    style={{ zIndex: 9999999 }}
-                    trigger={icon}
-                    content={colorPicker}
-                    on='click' />;               
+    // const icon1 = <FontAwesomeIcon style={{ float: 'right', marginRight: '50px' }} icon={faCog} />;
+    // const colorPicker1 = <SketchPicker color={selectedStateColor} onChangeComplete={handleSelectedStateColorChange} />;
+    // const popup1 = <Popup
+    //                 style={{ zIndex: 9999999 }}
+    //                 trigger={icon1}
+    //                 content={colorPicker1}
+    //                 on='click' />;
+                    
+    // console.log('BEFORE RETURN!', statesColorConfig)
 
     return (
         <div className="app-container">
@@ -64,7 +76,7 @@ export default function Map() {
             <div className="usa-map">
                 <USAMap defaultFill={mapColor} onClick={mapHandler} customize={statesCustomConfig()} />
             </div>
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose} size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>{selectedState}</Modal.Title>
                 </Modal.Header>

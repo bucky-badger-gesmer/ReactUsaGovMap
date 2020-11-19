@@ -17,6 +17,7 @@ export default function StateGovInfo(props) {
             senators = resp.results[0].members.filter(member => member.state === props.stateAbb);
             senators = senators.sort((a, b) => a.title > b.title ? 1 : -1);
 
+            console.log('senators', senators)
             setSenators(senators);
         });
 
@@ -36,6 +37,7 @@ export default function StateGovInfo(props) {
 
             // sorts them by ascending districts:
             reps = reps.sort((a, b) => a.district - b.district);
+            console.log('reps', reps);
 
             setRepresentatives(reps);
         });
@@ -46,20 +48,24 @@ export default function StateGovInfo(props) {
             <h3>Senators</h3>
             {senators && 
                 <ul>
-                    {senators.map(o => {
-                        return <li>({o.party}) {o.first_name} {o.last_name}, {o.title}</li>
+                    {senators.map(sen => {
+                        return <Member member={sen} />;
+                        // return <li>({o.party}) {o.first_name} {o.last_name}, {o.title}</li>
                     })}
                 </ul>
             }
             <h3>Representatives</h3>
             {representatives &&
                 <ul>
-                    {representatives.map(o => {
-                        return <li>({o.party}) {o.first_name} {o.last_name}</li>
+                    {representatives.map(rep => {
+                        return <Member member={rep} />;
                     })}
+                    {/* {representatives.map(o => {
+                        return <li>({o.party}) {o.first_name} {o.last_name}</li>
+                    })} */}
                 </ul>
             }
-            <Member />
+            {/* <Member /> */}
         </div>
     );
 }
