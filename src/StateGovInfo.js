@@ -45,7 +45,7 @@ export default function StateGovInfo(props) {
     
     return (
         <div style={{ height: '500px', overflowY: 'scroll' }}>
-            <h3>Senators</h3>
+            <h2>Senators</h2>
             {senators && 
                 <ul>
                     {senators.map(sen => {
@@ -54,7 +54,7 @@ export default function StateGovInfo(props) {
                     })}
                 </ul>
             }
-            <h3>Representatives</h3>
+            <h2>Representatives</h2>
             {representatives &&
                 <ul>
                     {representatives.map(rep => {
