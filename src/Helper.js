@@ -51,3 +51,18 @@ export const states = {
     WI: 'Wisconsin',
     WY: 'Wyoming'
 };
+
+export const districtGenerator = (districtNumber) => {
+    let j = districtNumber % 10,
+    k = districtNumber % 100;
+    if (j == 1 && k != 11) {
+        return districtNumber + "st";
+    }
+    if (j == 2 && k != 12) {
+        return districtNumber + "nd";
+    }
+    if (j == 3 && k != 13) {
+        return districtNumber + "rd";
+    }
+    return districtNumber + "th";
+};

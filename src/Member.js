@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Nav from 'react-bootstrap/Nav';
-import Tabs from 'react-bootstrap/Tabs';
-import Tab from 'react-bootstrap/Tab';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebook, faTwitter, faTumblr, faYoutube, faLinkedin, faGooglePlus } from "@fortawesome/free-brands-svg-icons";
+import { districtGenerator } from './Helper';
+import './css/Member.css';
 
 
 export default function Member(props) {
@@ -36,25 +32,34 @@ export default function Member(props) {
     console.log('MEMBA', props.member);
 
     return (
-        <Card style={{ marginBottom: '10px', padding: '10px', height: '380px' }}>
-            <Tabs
-                id="controlled-tab-example"
-                activeKey={key}
-                onSelect={(k) => setKey(k)}
-            >
-                <Tab eventKey="home" title="Home">
-                    <img src={`https://theunitedstates.io/images/congress/225x275/${props.member.id}.jpg`} />
-                    <h3>({props.member.party}) {props.member.first_name} {props.member.last_name}</h3>
-
-
-
-
-                </Tab>
-                <Tab eventKey="profile" title="Profile">
-                </Tab>
-                <Tab eventKey="contact" title="Contact">
-                </Tab>
-            </Tabs>
-        </Card>
+        <div className="card">
+            <div className="card-header">
+                <div className="image-cropper">
+                    <img src={`https://theunitedstates.io/images/congress/225x275/${props.member.id}.jpg`} alt="Profile Image" className="profile-img" />
+                </div>
+            </div>
+            <div className="card-body">
+                <p className="full-name">({props.member.party}) {props.member.first_name} {props.member.last_name}</p>
+                <p className="username">{`@${props.member.twitter_account}`}</p>
+                <p className="city">{props.member.senate_class ? props.member.title : `${districtGenerator(props.member.district)} District`}</p>
+                <p className="desc">Full stack developer, avid reader, love to take a long walk, swim.</p>
+                <p>
+                    <a href="#" className="social-icon facebook"><FontAwesomeIcon icon={faFacebook} /></a>
+                    <a href="#" className="social-icon twitter"><FontAwesomeIcon icon={faTwitter} /></a>
+                    <a href="#" className="social-icon tumblr"><FontAwesomeIcon icon={faTumblr} /></a>
+                    <a href="#" className="social-icon youtube"><FontAwesomeIcon icon={faYoutube} /></a>
+                    <a href="#" className="social-icon linkedin"><FontAwesomeIcon icon={faLinkedin} /></a>
+                    <a href="#" className="social-icon google-plus"><FontAwesomeIcon icon={faGooglePlus} /></a>
+                </p>
+            </div>
+            <div className="card-footer">
+                <div className="col vr">
+                    <p><span className="count">1.8K</span> Followers</p>
+                </div>
+                <div className="col">
+                    <p><span className="count">2.0K</span> Following</p>
+                </div>
+            </div>
+        </div>
     );
 }
