@@ -20,12 +20,10 @@
 .card .card-header .profile-img {
     width: 170px;
     height: 170px;
-    /* border-radius: 1000px; */
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: 6px solid #fff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, .2);
+    box-shadow: 0 0 100px rgba(0, 0, 0, .2);
     margin-top: -30px;
     object-fit: cover;
     border-radius: 100%;
@@ -96,7 +94,7 @@
     display: table-cell;
     padding: 5px 10px;
     font-size: 15px;
-    width: 50%;
+    width: 33%;
 }
 
 .card .card-footer .count {
