@@ -48,24 +48,15 @@ export default function StateGovInfo(props) {
             <h2>Senators</h2>
             {senators && 
                 <ul>
-                    {senators.map(sen => {
-                        return <Member member={sen} />;
-                        // return <li>({o.party}) {o.first_name} {o.last_name}, {o.title}</li>
-                    })}
+                    {senators.filter(sen => sen.in_office).map((sen, i) => <Member member={sen} key={i} mapColor={props.mapColor} />)}
                 </ul>
             }
             <h2>Representatives</h2>
             {representatives &&
                 <ul>
-                    {representatives.map(rep => {
-                        return <Member member={rep} />;
-                    })}
-                    {/* {representatives.map(o => {
-                        return <li>({o.party}) {o.first_name} {o.last_name}</li>
-                    })} */}
+                    {representatives.filter(rep => rep.in_office).map((rep, i) => <Member member={rep} key={i} mapColor={props.mapColor} />)}
                 </ul>
             }
-            {/* <Member /> */}
         </div>
     );
 }

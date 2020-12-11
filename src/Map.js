@@ -83,7 +83,7 @@ export default function Map() {
                 <Modal.Body>
                     {/* <Button variant="primary" onClick={handleGet}>GET SOME DATA!</Button> */}
                     {/* {popup1} */}
-                    <StateGovInfo stateAbb={selectedStateAbbr} />
+                    <StateGovInfo stateAbb={selectedStateAbbr} mapColor={mapColor} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
