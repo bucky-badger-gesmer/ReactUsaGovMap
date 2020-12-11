@@ -53,6 +53,10 @@ export const states = {
 };
 
 export const districtGenerator = (districtNumber) => {
+    if (districtNumber == 'At-Large') {
+        return districtNumber;
+    }
+
     let j = districtNumber % 10,
     k = districtNumber % 100;
     if (j == 1 && k != 11) {
