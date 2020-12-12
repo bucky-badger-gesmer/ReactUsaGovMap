@@ -70,3 +70,19 @@ export const districtGenerator = (districtNumber) => {
     }
     return districtNumber + "th";
 };
+
+export const getSenators = () => {
+    return fetch('https://api.propublica.org/congress/v1/116/Senate/members.json', {
+        headers: {
+            'x-api-key': 'jGxfPjMYvOkeKZX2YlPvaK4FctW2Vzj1Makj66vR'
+        }
+    }).then(resp => resp.json());
+};
+
+export const getRepresentatives = () => {
+    return fetch('https://api.propublica.org/congress/v1/116/House/members.json', {
+        headers: {
+            'x-api-key': 'jGxfPjMYvOkeKZX2YlPvaK4FctW2Vzj1Makj66vR'
+        }
+    }).then(resp => resp.json());
+};
