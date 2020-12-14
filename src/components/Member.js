@@ -1,9 +1,10 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faTwitter, faYoutube, faSafari } from "@fortawesome/free-brands-svg-icons";
-import { districtGenerator } from './Helper';
-import './css/Member.css';
+import { faFacebook, faSafari, faTwitter, faYoutube } from "@fortawesome/free-brands-svg-icons";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { districtGenerator } from '../Helper';
+
+require('../css/Member.css');
 
 export default function Member(props) {
     let memberColor = null;

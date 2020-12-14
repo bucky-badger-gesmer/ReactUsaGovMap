@@ -1,5 +1,5 @@
-import React from 'react';
 import Member from './Member';
+import React from 'react';
 
 export default function StateGovInfo(props) {
     return (

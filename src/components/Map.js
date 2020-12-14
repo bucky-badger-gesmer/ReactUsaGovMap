@@ -1,21 +1,40 @@
+import { Button, Modal } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
-import USAMap from 'react-usa-map';
-import { SketchPicker } from 'react-color';
+import { faCog, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { getRepresentatives, getSenators, states } from '../Helper';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { Popup } from 'semantic-ui-react';
-import { Modal, Button } from 'react-bootstrap';
-import { states } from './Helper';
+import { SketchPicker } from 'react-color';
 import StateGovInfo from './StateGovInfo';
-require('./Map.css');
+import USAMap from 'react-usa-map';
+
+require('../css/Map.css');
 
 export default function Map() {
     const [mapColor, setMapColor] = useState('#FFD701');
     const [selectedState, setSelectedState] = useState(null);
     const [selectedStateAbbr, setSelectedStateAbbr] = useState(null);
     const [show, setShow] = useState(false);
-    // const [selectedStateColor, setSelectedStateColor] = useState('#FFD701');
-    // const [statesColorConfig, setStatesColorConfig] = ([]);
+    const [selectedStateColor, setSelectedStateColor] = useState('#FFD701');
+    const [statesColorConfig, setStatesColorConfig] = ([]);
+
+    const [senators, setSenators] = useState(null);
+    const [representatives, setRepresentatives] = useState(null);
+
+    useEffect(() => {
+        // get senators
+        getSenators().then(resp => {
+            const senators = resp.results[0].members.filter(member => member.in_office);
+            setSenators(senators);
+        });
+
+        // get representatives
+        getRepresentatives().then(resp => {
+            const representatives = resp.results[0].members.filter(member => member.in_office);
+            setRepresentatives(representatives);
+        });
+    }, []);
 
     const mapHandler = event => {
         const stateName = states[event.target.dataset.name];
@@ -31,22 +50,8 @@ export default function Map() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    /* optional customization of filling per state and calling custom callbacks per state */
-    const statesCustomConfig = () => {
-        // return {
-        //     "NJ": {
-        //         fill: "navy",
-        //     },
-        //     "NY": {
-        //         fill: "#CC0000"
-        //     }
-        // };
-        return {};
-    };
-
     // const handleSelectedStateColorChange = color => {
     //     setSelectedStateColor(color.hex);
-    //     console.log('stuff', selectedState, selectedStateAbbr, selectedStateColor, statesColorConfig);
     //     statesColorConfig.push({
     //         selectedStateAbbr: selectedStateColor
     //     });
@@ -67,26 +72,37 @@ export default function Map() {
     //                 trigger={icon1}
     //                 content={colorPicker1}
     //                 on='click' />;
-                    
+                
     // console.log('BEFORE RETURN!', statesColorConfig)
+    // <FontAwesomeIcon style={{ float: 'left' }} icon={faInfoCircle} />
+
+    const onStateSelect = (total) => {
+        console.log('ON STATE SELECT', total)
+    };
+
+    // console.log('MAP!', senators, representatives)
 
     return (
         <div className="app-container">
-            <h1>Who Represents You In Congress?{popup}</h1>
+            <h1>Who <em>Is</em> Our Congress? {popup}</h1>
             <div className="usa-map">
-                <USAMap defaultFill={mapColor} onClick={mapHandler} customize={statesCustomConfig()} />
+                <USAMap defaultFill={mapColor} onClick={mapHandler} />
             </div>
             <Modal show={show} onHide={handleClose} size="lg">
-                <Modal.Header closeButton>
-                    <Modal.Title>{selectedState}</Modal.Title>
+                <Modal.Header closeButton style={{ backgroundColor: mapColor }}>
+                    <Modal.Title style={{ color: 'white' }}>{selectedState.toUpperCase()}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {/* <Button variant="primary" onClick={handleGet}>GET SOME DATA!</Button> */}
                     {/* {popup1} */}
-                    <StateGovInfo stateAbb={selectedStateAbbr} mapColor={mapColor} />
+                    <StateGovInfo stateAbb={selectedStateAbbr} 
+                        mapColor={mapColor}
+                        senators={senators}
+                        representatives={representatives}
+                        onStateSelect={onStateSelect} />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={handleClose} style={{ backgroundColor: mapColor }}>
                         Close
                     </Button>
                 </Modal.Footer>
