@@ -1,9 +1,8 @@
-import Map from './Map';
+import CongressApp from './components/CongressApp';
 
-function App() {
-    return (
-        <Map />
-    );
+export default function App() {
+  return (
+    <CongressApp />
+  );
 }
 
-export default App;
