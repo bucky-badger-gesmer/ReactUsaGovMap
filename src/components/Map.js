@@ -1,40 +1,27 @@
 import { Button, Modal } from 'react-bootstrap';
-import React, { useEffect, useState } from 'react';
-import { faCog, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { getRepresentatives, getSenators, states } from '../Helper';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Popup } from 'semantic-ui-react';
 import { SketchPicker } from 'react-color';
 import StateGovInfo from './StateGovInfo';
 import USAMap from 'react-usa-map';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
+import { states } from '../Helper';
 
 require('../css/Map.css');
 
-export default function Map() {
-    const [mapColor, setMapColor] = useState('#FFD701');
+export default function Map(props) {
+    const mapColor = useSelector((state) => state.color);
+    const dispatch = useDispatch();
+    console.log('mapColor', mapColor, props);
+
     const [selectedState, setSelectedState] = useState(null);
     const [selectedStateAbbr, setSelectedStateAbbr] = useState(null);
     const [show, setShow] = useState(false);
     const [selectedStateColor, setSelectedStateColor] = useState('#FFD701');
     const [statesColorConfig, setStatesColorConfig] = ([]);
-
-    const [senators, setSenators] = useState(null);
-    const [representatives, setRepresentatives] = useState(null);
-
-    useEffect(() => {
-        // get senators
-        getSenators().then(resp => {
-            const senators = resp.results[0].members.filter(member => member.in_office);
-            setSenators(senators);
-        });
-
-        // get representatives
-        getRepresentatives().then(resp => {
-            const representatives = resp.results[0].members.filter(member => member.in_office);
-            setRepresentatives(representatives);
-        });
-    }, []);
 
     const mapHandler = event => {
         const stateName = states[event.target.dataset.name];
@@ -44,7 +31,12 @@ export default function Map() {
     };
 
     const handleChangeComplete = color => {
-        setMapColor(color.hex);
+        dispatch({
+            type: 'CHANGE_COLOR',
+            payload: {
+                color: color.hex
+            }
+        });
     };
 
     const handleClose = () => setShow(false);
@@ -76,11 +68,9 @@ export default function Map() {
     // console.log('BEFORE RETURN!', statesColorConfig)
     // <FontAwesomeIcon style={{ float: 'left' }} icon={faInfoCircle} />
 
-    const onStateSelect = (total) => {
-        console.log('ON STATE SELECT', total)
-    };
-
-    // console.log('MAP!', senators, representatives)
+    // const onStateSelect = (total) => {
+    //     console.log('ON STATE SELECT', total)
+    // };
 
     return (
         <div className="app-container">
@@ -90,16 +80,15 @@ export default function Map() {
             </div>
             <Modal show={show} onHide={handleClose} size="lg">
                 <Modal.Header closeButton style={{ backgroundColor: mapColor }}>
-                    <Modal.Title style={{ color: 'white' }}>{selectedState.toUpperCase()}</Modal.Title>
+                    <Modal.Title style={{ color: 'white' }}>{selectedState && selectedState.toUpperCase()}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {/* <Button variant="primary" onClick={handleGet}>GET SOME DATA!</Button> */}
-                    {/* {popup1} */}
                     <StateGovInfo stateAbb={selectedStateAbbr} 
                         mapColor={mapColor}
-                        senators={senators}
-                        representatives={representatives}
-                        onStateSelect={onStateSelect} />
+                        senators={props.senators}
+                        representatives={props.representatives}
+                        // onStateSelect={onStateSelect} 
+                        />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose} style={{ backgroundColor: mapColor }}>
