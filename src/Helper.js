@@ -1,3 +1,6 @@
+const apiKey = 'jGxfPjMYvOkeKZX2YlPvaK4FctW2Vzj1Makj66vR';
+const currentCongress = 116;
+
 export const states = {
     AL: 'Alabama',
     AK: 'Alaska',
@@ -72,17 +75,30 @@ export const districtGenerator = (districtNumber) => {
 };
 
 export const getSenators = () => {
-    return fetch('https://api.propublica.org/congress/v1/116/Senate/members.json', {
+    return fetch(`https://api.propublica.org/congress/v1/${currentCongress}/Senate/members.json`, {
         headers: {
-            'x-api-key': 'jGxfPjMYvOkeKZX2YlPvaK4FctW2Vzj1Makj66vR'
+            'x-api-key': apiKey
         }
     }).then(resp => resp.json());
 };
 
 export const getRepresentatives = () => {
-    return fetch('https://api.propublica.org/congress/v1/116/House/members.json', {
+    return fetch(`https://api.propublica.org/congress/v1/${currentCongress}/House/members.json`, {
         headers: {
-            'x-api-key': 'jGxfPjMYvOkeKZX2YlPvaK4FctW2Vzj1Makj66vR'
+            'x-api-key': apiKey
         }
     }).then(resp => resp.json());
+};
+
+export const getMemberAge = (dateOfBirth) => {
+    let today = new Date();
+    let birthDate = new Date(dateOfBirth);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    let m = today.getMonth() - birthDate.getMonth();
+
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age --;
+    }
+
+    return age;
 };

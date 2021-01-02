@@ -1,8 +1,8 @@
+import { districtGenerator, getMemberAge } from '../Helper';
 import { faFacebook, faSafari, faTwitter, faYoutube } from "@fortawesome/free-brands-svg-icons";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { districtGenerator } from '../Helper';
 
 require('../css/Member.css');
 
@@ -24,6 +24,8 @@ export default function Member(props) {
         border: `8px solid ${memberColor}`
     };
 
+    const age = getMemberAge(props.member.date_of_birth);
+
     return (
         <div className="card">
             <div className="card-header" style={{ backgroundColor: props.mapColor }}>
@@ -34,7 +36,7 @@ export default function Member(props) {
             <div className="card-body">
                 <p className="full-name">({props.member.party}) {props.member.first_name} {props.member.middle_name} {props.member.last_name}</p>
                 <p className="username">{props.member.office} | {props.member.phone}</p>
-                <p className="city">{props.member.senate_class ? props.member.title : `${districtGenerator(props.member.district)} District`}, {props.member.seniority} Years Experience</p>
+                <p className="city">{props.member.senate_class ? props.member.title : `${districtGenerator(props.member.district)} District`} | {age} Years Old, {props.member.seniority} Years Experience</p>
                 <p className="desc">{props.member.leadership_role}</p>
                 <p>
                     {props.member.facebook_account && <a href={`http://www.facebook.com/${props.member.facebook_account}`} className="social-icon facebook"><FontAwesomeIcon icon={faFacebook} /></a>}

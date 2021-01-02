@@ -15,7 +15,6 @@ require('../css/Map.css');
 export default function Map(props) {
     const mapColor = useSelector((state) => state.color);
     const dispatch = useDispatch();
-    console.log('mapColor', mapColor, props);
 
     const [selectedState, setSelectedState] = useState(null);
     const [selectedStateAbbr, setSelectedStateAbbr] = useState(null);
