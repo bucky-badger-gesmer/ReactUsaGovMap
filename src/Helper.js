@@ -52,7 +52,13 @@ export const states = {
     WA: 'Washington',
     WV: 'West Virginia',
     WI: 'Wisconsin',
-    WY: 'Wyoming'
+    WY: 'Wyoming',
+    // Delegates:
+    AS: 'American Samoa',
+    GU: 'Guam',
+    MP: 'Northern Mariana Islands',
+    PR: 'Puerto Rico',
+    VI: 'Virgin Islands'
 };
 
 export const districtGenerator = (districtNumber) => {
@@ -101,4 +107,17 @@ export const getMemberAge = (dateOfBirth) => {
     }
 
     return age;
+};
+
+export const getMemberParty = (party) => {
+    switch (party) {
+        case 'R':
+            return 'Republican';
+        case 'D':
+            return 'Democrat';
+        case 'I':
+            return 'Independent'
+        default:
+            return party;
+    }
 };
