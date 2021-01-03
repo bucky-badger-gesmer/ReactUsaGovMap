@@ -5,11 +5,11 @@ import App from './App';
 import { Provider } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import colorReducer from './redux/colorReducer';
+import allReducers from './redux/index';
 import { createStore } from 'redux';
 import reportWebVitals from './reportWebVitals';
 
-const store = createStore(colorReducer);
+const store = createStore(allReducers);
 
 ReactDOM.render(
   <React.StrictMode>

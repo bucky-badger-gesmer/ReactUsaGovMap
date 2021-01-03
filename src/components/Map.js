@@ -13,7 +13,8 @@ import { states } from '../Helper';
 require('../css/Map.css');
 
 export default function Map(props) {
-    const mapColor = useSelector((state) => state.color);
+    const mapColor = useSelector((state) => state.colorReducer.color);
+    // console.log('map color', mapColor)
     const dispatch = useDispatch();
 
     const [selectedState, setSelectedState] = useState(null);
