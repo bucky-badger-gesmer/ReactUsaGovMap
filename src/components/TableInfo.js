@@ -1,13 +1,17 @@
+import { Button, Modal } from 'react-bootstrap';
 import { getMemberAge, getMemberParty, states } from '../Helper';
 
 import { DataGrid, } from '@material-ui/data-grid';
+import Member from './Member';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
-
-require('../css/TableInfo.css');
+import { useState } from 'react';
 
 export default function TableInfo(props) {
     const color = useSelector((state) => state.color);
+    const [show, setShow] = useState(false);
+    const [selectedMember, setSelectedMember] = useState(null);
+
     const useStyles = makeStyles({
         root: {
             '& .firstName': {
@@ -45,6 +49,16 @@ export default function TableInfo(props) {
 
     const classes = useStyles();
 
+    const handleClose = () => {
+        setShow(false);
+        setSelectedMember(null);
+    };
+
+    const onRowClick = (RowParams) => {
+        setSelectedMember(RowParams.row.member);
+        setShow(true);
+    };
+
     const columns = [
         { field: 'firstName', headerClassName: 'firstName', headerAlign: 'center', headerName: 'First Name', width: 150 },
         { field: 'lastName', headerClassName: 'lastName', headerAlign: 'center', headerName: 'Last Name', width: 150 },
@@ -81,9 +95,13 @@ export default function TableInfo(props) {
                 member: member
             };
         });
+    }
 
-    
-        console.log('rows', rows)
+    let selectedMemberDisplay = null;
+    if (selectedMember) {
+        selectedMemberDisplay = selectedMember.gender === 'M'
+        ? `Congressman ${selectedMember.first_name} ${selectedMember.middle_name === null ? '' : selectedMember.middle_name} ${selectedMember.last_name}`
+        : `Congresswoman ${selectedMember.first_name} ${selectedMember.middle_name === null ? '' : selectedMember.middle_name} ${selectedMember.last_name}`;
     }
 
     return (
@@ -93,8 +111,24 @@ export default function TableInfo(props) {
                 columns={columns}
                 pageSize={10}
                 rowsPerPageOptions={[10, 20, 50, 100]}
-                onRowClick={(RowParams) => console.log('RowParams', RowParams)}
+                onRowClick={onRowClick}
                 disableSelectionOnClick={true} />
+            
+            <Modal show={show} onHide={handleClose} size="lg">
+                <Modal.Header closeButton style={{ backgroundColor: color }}>
+                    <Modal.Title style={{ color: 'white' }}>
+                        {selectedMemberDisplay}
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {selectedMember && <Member member={selectedMember} mapColor={color} />}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose} style={{ backgroundColor: color }}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }
