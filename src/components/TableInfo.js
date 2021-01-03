@@ -35,6 +35,9 @@ export default function TableInfo(props) {
             '& .party': {
                 backgroundColor: color
             },
+            '& .nextElection': {
+                backgroundColor: color
+            },
             '& .totalVotes': {
                 backgroundColor: color
             },
@@ -67,9 +70,10 @@ export default function TableInfo(props) {
         { field: 'seniority', headerClassName: 'seniority', headerAlign: 'center', headerName: 'Seniority', type: 'number', width: 110 },
         { field: 'title', headerClassName: 'title', headerAlign: 'center', headerName: 'Title', width: 160 },
         { field: 'party', headerClassName: 'party', headerAlign: 'center', headerName: 'Party', width: 120 },
-        { field: 'totalVotes', headerClassName: 'totalVotes', headerAlign: 'center', headerName: 'Total Votes', type: 'number', width: 130 },
-        { field: 'missedVotes', headerClassName: 'missedVotes', headerAlign: 'center', headerName: 'Missed Votes', type: 'number', width: 130 },
-        { field: 'totalPresent', headerClassName: 'totalPresent', headerAlign: 'center', headerName: 'Total Present', type: 'number', width: 130 }
+        { field: 'nextElection', headerClassName: 'nextElection', headerAlign: 'center', headerName: 'Next Election', width: 100 },
+        { field: 'totalVotes', headerClassName: 'totalVotes', headerAlign: 'center', headerName: 'Total Votes', type: 'number', width: 100 },
+        { field: 'missedVotes', headerClassName: 'missedVotes', headerAlign: 'center', headerName: 'Missed Votes', type: 'number', width: 100 },
+        { field: 'totalPresent', headerClassName: 'totalPresent', headerAlign: 'center', headerName: 'Total Present', type: 'number', width: 100 }
     ];
 
     let members = null;
@@ -89,6 +93,7 @@ export default function TableInfo(props) {
                 seniority: member.seniority,
                 title: member.title,
                 party: getMemberParty(member.party),
+                nextElection: member.next_election,
                 totalVotes: member.total_votes,
                 missedVotes: member.missed_votes,
                 totalPresent: member.total_present,
