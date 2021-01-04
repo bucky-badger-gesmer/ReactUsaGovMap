@@ -1,5 +1,5 @@
 import { Button, Modal } from 'react-bootstrap';
-import { getMemberAge, getMemberParty, states } from '../Helper';
+import { districtGenerator, getMemberAge, getMemberParty, states } from '../Helper';
 
 import { DataGrid, } from '@material-ui/data-grid';
 import Member from './Member';
@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 
 export default function TableInfo(props) {
-    const color = useSelector((state) => state.color);
+    const color = useSelector((state) => state.colorReducer.color);
     const [show, setShow] = useState(false);
     const [selectedMember, setSelectedMember] = useState(null);
 
@@ -46,6 +46,9 @@ export default function TableInfo(props) {
             },
             '& .totalPresent': {
                 backgroundColor: color
+            },
+            '& .MuiDataGrid-row:hover': {
+                cursor: 'pointer'
             }
         },
     });
@@ -104,9 +107,17 @@ export default function TableInfo(props) {
 
     let selectedMemberDisplay = null;
     if (selectedMember) {
-        selectedMemberDisplay = selectedMember.gender === 'M'
-        ? `Congressman ${selectedMember.first_name} ${selectedMember.middle_name === null ? '' : selectedMember.middle_name} ${selectedMember.last_name}`
-        : `Congresswoman ${selectedMember.first_name} ${selectedMember.middle_name === null ? '' : selectedMember.middle_name} ${selectedMember.last_name}`;
+        switch (selectedMember.title) {
+            case 'Representative':
+                selectedMemberDisplay = `${selectedMember.title} ${selectedMember.first_name} ${selectedMember.middle_name === null ? '' : selectedMember.middle_name} ${selectedMember.last_name} | ${states[selectedMember.state]} ${districtGenerator(selectedMember.district)} District`;
+                break;
+            case 'Delegate':
+                selectedMemberDisplay = `${selectedMember.title} ${selectedMember.first_name} ${selectedMember.middle_name === null ? '' : selectedMember.middle_name} ${selectedMember.last_name} | ${states[selectedMember.state]}`;
+                break;
+            default:
+                selectedMemberDisplay = `${selectedMember.title.substring(0, 7)} ${selectedMember.first_name} ${selectedMember.middle_name === null ? '' : selectedMember.middle_name} ${selectedMember.last_name} | ${states[selectedMember.state]}`;
+                break;
+        }
     }
 
     return (
@@ -118,7 +129,6 @@ export default function TableInfo(props) {
                 rowsPerPageOptions={[10, 20, 50, 100]}
                 onRowClick={onRowClick}
                 disableSelectionOnClick={true} />
-            
             <Modal show={show} onHide={handleClose} size="lg">
                 <Modal.Header closeButton style={{ backgroundColor: color }}>
                     <Modal.Title style={{ color: 'white' }}>

@@ -1,5 +1,5 @@
-const apiKey = 'jGxfPjMYvOkeKZX2YlPvaK4FctW2Vzj1Makj66vR';
-const currentCongress = 116;
+const API_KEY = 'jGxfPjMYvOkeKZX2YlPvaK4FctW2Vzj1Makj66vR';
+const CURRENT_CONGRESS = 116;
 
 export const states = {
     AL: 'Alabama',
@@ -62,36 +62,36 @@ export const states = {
 };
 
 export const districtGenerator = (districtNumber) => {
-    if (districtNumber == 'At-Large') {
+    if (districtNumber === 'At-Large') {
         return districtNumber;
     }
 
     let j = districtNumber % 10,
     k = districtNumber % 100;
-    if (j == 1 && k != 11) {
+    if (j === 1 && k !== 11) {
         return districtNumber + "st";
     }
-    if (j == 2 && k != 12) {
+    if (j === 2 && k !== 12) {
         return districtNumber + "nd";
     }
-    if (j == 3 && k != 13) {
+    if (j === 3 && k !== 13) {
         return districtNumber + "rd";
     }
     return districtNumber + "th";
 };
 
 export const getSenators = () => {
-    return fetch(`https://api.propublica.org/congress/v1/${currentCongress}/Senate/members.json`, {
+    return fetch(`https://api.propublica.org/congress/v1/${CURRENT_CONGRESS}/Senate/members.json`, {
         headers: {
-            'x-api-key': apiKey
+            'x-api-key': API_KEY
         }
     }).then(resp => resp.json());
 };
 
 export const getRepresentatives = () => {
-    return fetch(`https://api.propublica.org/congress/v1/${currentCongress}/House/members.json`, {
+    return fetch(`https://api.propublica.org/congress/v1/${CURRENT_CONGRESS}/House/members.json`, {
         headers: {
-            'x-api-key': apiKey
+            'x-api-key': API_KEY
         }
     }).then(resp => resp.json());
 };
