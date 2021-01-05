@@ -1,5 +1,5 @@
 const API_KEY = 'jGxfPjMYvOkeKZX2YlPvaK4FctW2Vzj1Makj66vR';
-const CURRENT_CONGRESS = 116;
+const CURRENT_CONGRESS = 117;
 
 export const states = {
     AL: 'Alabama',
