@@ -1,4 +1,5 @@
 import { Button, Modal } from 'react-bootstrap';
+import { CURRENT_CONGRESS, states } from '../Helper';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,7 +9,6 @@ import { SketchPicker } from 'react-color';
 import StateGovInfo from './StateGovInfo';
 import USAMap from 'react-usa-map';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
-import { states } from '../Helper';
 
 require('../css/Map.css');
 
@@ -74,7 +74,7 @@ export default function Map(props) {
 
     return (
         <div className="app-container">
-            <h1>Who <em>Is</em> Our Congress? {popup}</h1>
+            <h1>Who <em style={{ color: mapColor }}>Is</em> Our <span style={{ color: mapColor }}>{CURRENT_CONGRESS}th</span> Congress? {popup}</h1>
             <div className="usa-map">
                 <USAMap defaultFill={mapColor} onClick={mapHandler} />
             </div>

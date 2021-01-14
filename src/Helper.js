@@ -1,5 +1,5 @@
 const API_KEY = 'jGxfPjMYvOkeKZX2YlPvaK4FctW2Vzj1Makj66vR';
-const CURRENT_CONGRESS = 117;
+export const CURRENT_CONGRESS = 117;
 
 export const states = {
     AL: 'Alabama',
@@ -81,15 +81,23 @@ export const districtGenerator = (districtNumber) => {
 };
 
 export const getSenators = () => {
-    return fetch(`https://api.propublica.org/congress/v1/${CURRENT_CONGRESS}/Senate/members.json`, {
-        headers: {
-            'x-api-key': API_KEY
-        }
-    }).then(resp => resp.json());
+    return apiCall(`https://api.propublica.org/congress/v1/${CURRENT_CONGRESS}/Senate/members.json`);
 };
 
 export const getRepresentatives = () => {
-    return fetch(`https://api.propublica.org/congress/v1/${CURRENT_CONGRESS}/House/members.json`, {
+    return apiCall(`https://api.propublica.org/congress/v1/${CURRENT_CONGRESS}/House/members.json`);
+};
+
+export const getSpecificMember = (memberId) => {
+    return apiCall(`https://api.propublica.org/congress/v1/members/${memberId}.json`);
+};
+
+export const getSpecificMemberCosponsoredBills = (memberId, billType) => {
+    return apiCall(`https://api.propublica.org/congress/v1/members/${memberId}/bills/${billType}.json`);
+};
+
+const apiCall = (url) => {
+    return fetch(url, {
         headers: {
             'x-api-key': API_KEY
         }
