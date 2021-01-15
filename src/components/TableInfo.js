@@ -1,6 +1,15 @@
 import { Button, Modal } from 'react-bootstrap';
-import { districtGenerator, getMemberAge, getMemberParty, states } from '../Helper';
+import {
+    CURRENT_CONGRESS,
+    districtGenerator,
+    getMemberAge,
+    getMemberParty,
+    getSpecificMember,
+    getSpecificMemberCosponsoredBills,
+    states
+} from '../Helper';
 
+import CosponsoredBill from './CosponsoredBill';
 import { DataGrid, } from '@material-ui/data-grid';
 import Member from './Member';
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,6 +20,7 @@ export default function TableInfo(props) {
     const color = useSelector((state) => state.colorReducer.color);
     const [show, setShow] = useState(false);
     const [selectedMember, setSelectedMember] = useState(null);
+    const [cosponsoredBills, setCosponsoredBills] = useState(null);
 
     const useStyles = makeStyles({
         root: {
@@ -58,25 +68,37 @@ export default function TableInfo(props) {
     const handleClose = () => {
         setShow(false);
         setSelectedMember(null);
+        setCosponsoredBills(null);
     };
 
     const onRowClick = (RowParams) => {
         setSelectedMember(RowParams.row.member);
         setShow(true);
+
+        getSpecificMemberCosponsoredBills(RowParams.row.member.id, 'cosponsored')
+            .then(resp => {
+                let foo = resp.results[0].bills
+                    .filter(bill => parseInt(bill.congress) === CURRENT_CONGRESS)
+                    .map(bill => {
+                        return <CosponsoredBill bill={bill}/>
+                    });
+
+                setCosponsoredBills(foo);
+            });
     };
 
     const columns = [
         { field: 'firstName', headerClassName: 'firstName', headerAlign: 'center', headerName: 'First Name', width: 150 },
         { field: 'lastName', headerClassName: 'lastName', headerAlign: 'center', headerName: 'Last Name', width: 150 },
-        { field: 'state', headerClassName: 'state', headerAlign: 'center', headerName: 'State', width: 180 },
-        { field: 'age', headerClassName: 'age', headerAlign: 'center', headerName: 'Age', type: 'number', width: 110 },
-        { field: 'seniority', headerClassName: 'seniority', headerAlign: 'center', headerName: 'Seniority', type: 'number', width: 110 },
-        { field: 'title', headerClassName: 'title', headerAlign: 'center', headerName: 'Title', width: 160 },
-        { field: 'party', headerClassName: 'party', headerAlign: 'center', headerName: 'Party', width: 120 },
-        { field: 'nextElection', headerClassName: 'nextElection', headerAlign: 'center', headerName: 'Next Election', width: 100 },
-        { field: 'totalVotes', headerClassName: 'totalVotes', headerAlign: 'center', headerName: 'Total Votes', type: 'number', width: 100 },
-        { field: 'missedVotes', headerClassName: 'missedVotes', headerAlign: 'center', headerName: 'Missed Votes', type: 'number', width: 100 },
-        { field: 'totalPresent', headerClassName: 'totalPresent', headerAlign: 'center', headerName: 'Total Present', type: 'number', width: 100 }
+        { field: 'state', headerClassName: 'state', headerAlign: 'center', headerName: 'State', flex: 1 },
+        { field: 'age', headerClassName: 'age', headerAlign: 'center', headerName: 'Age', type: 'number', flex: 1 },
+        { field: 'seniority', headerClassName: 'seniority', headerAlign: 'center', headerName: 'Seniority', type: 'number', flex: 1 },
+        { field: 'title', headerClassName: 'title', headerAlign: 'center', headerName: 'Title', flex: 1 },
+        { field: 'party', headerClassName: 'party', headerAlign: 'center', headerName: 'Party', flex: 1 },
+        { field: 'nextElection', headerClassName: 'nextElection', headerAlign: 'center', headerName: 'Next Election', flex: 1 },
+        { field: 'totalVotes', headerClassName: 'totalVotes', headerAlign: 'center', headerName: 'Total Votes', type: 'number', flex: 1 },
+        { field: 'missedVotes', headerClassName: 'missedVotes', headerAlign: 'center', headerName: 'Missed Votes', type: 'number', flex: 1 },
+        { field: 'totalPresent', headerClassName: 'totalPresent', headerAlign: 'center', headerName: 'Total Present', type: 'number', flex: 1 }
     ];
 
     let members = null;
@@ -137,6 +159,7 @@ export default function TableInfo(props) {
                 </Modal.Header>
                 <Modal.Body>
                     {selectedMember && <Member member={selectedMember} mapColor={color} />}
+                    {cosponsoredBills}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose} style={{ backgroundColor: color }}>
