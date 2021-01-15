@@ -1,4 +1,4 @@
-import Member from './Member';
+import Member from './Member/Member';
 import React from 'react';
 
 export default function StateGovInfo(props) {
