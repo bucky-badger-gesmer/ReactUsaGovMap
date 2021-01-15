@@ -9,9 +9,11 @@ import {
     states
 } from '../Helper';
 
-import CosponsoredBill from './CosponsoredBill';
+import Committee from './Member/Committee';
+import CosponsoredBill from './Member/CosponsoredBill';
 import { DataGrid, } from '@material-ui/data-grid';
-import Member from './Member';
+import Member from './Member/Member';
+import Subcommittee from './Member/Subcommittee';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
@@ -20,6 +22,8 @@ export default function TableInfo(props) {
     const color = useSelector((state) => state.colorReducer.color);
     const [show, setShow] = useState(false);
     const [selectedMember, setSelectedMember] = useState(null);
+    const [committees, setCommittees] = useState(null);
+    const [subcommittees, setSubcommittees] = useState(null);
     const [cosponsoredBills, setCosponsoredBills] = useState(null);
 
     const useStyles = makeStyles({
@@ -68,6 +72,8 @@ export default function TableInfo(props) {
     const handleClose = () => {
         setShow(false);
         setSelectedMember(null);
+        setCommittees(null);
+        setSubcommittees(null);
         setCosponsoredBills(null);
     };
 
@@ -77,13 +83,29 @@ export default function TableInfo(props) {
 
         getSpecificMemberCosponsoredBills(RowParams.row.member.id, 'cosponsored')
             .then(resp => {
-                let foo = resp.results[0].bills
+                const cosponsoredBills = resp.results[0].bills
                     .filter(bill => parseInt(bill.congress) === CURRENT_CONGRESS)
-                    .map(bill => {
-                        return <CosponsoredBill bill={bill}/>
+                    .map((bill, i) => {
+                        return <CosponsoredBill bill={bill} key={i} />
                     });
 
-                setCosponsoredBills(foo);
+                setCosponsoredBills(cosponsoredBills);
+
+                getSpecificMember(RowParams.row.member.id)
+                    .then(resp => {
+                        const roles = resp.results[0].roles;
+                        const currentRole = roles.filter(role => parseInt(role.congress) === CURRENT_CONGRESS)[0];
+                        const committees = currentRole.committees.map((committee, i) => {
+                            return <Committee committee={committee} key={i} />
+                        });
+
+                        const subcommittees = currentRole.subcommittees.map((subcommittee, i) => {
+                            return <Subcommittee subcommittee={subcommittee} key={i} />
+                        });
+
+                        setCommittees(committees);
+                        setSubcommittees(subcommittees);
+                    });
             });
     };
 
@@ -159,6 +181,11 @@ export default function TableInfo(props) {
                 </Modal.Header>
                 <Modal.Body>
                     {selectedMember && <Member member={selectedMember} mapColor={color} />}
+                    <h2 style={{ margin: '10px' }}>Committees:</h2>
+                    {committees}
+                    <h2 style={{ margin: '10px' }}>Subcommittees:</h2>
+                    {subcommittees}
+                    <h2 style={{ margin: '10px' }}>Cosponsored Bills:</h2>
                     {cosponsoredBills}
                 </Modal.Body>
                 <Modal.Footer>

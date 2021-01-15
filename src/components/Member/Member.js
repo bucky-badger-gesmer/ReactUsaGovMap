@@ -1,10 +1,10 @@
-import { districtGenerator, getMemberAge } from '../Helper';
+import { districtGenerator, getMemberAge } from '../../Helper';
 import { faFacebook, faSafari, faTwitter, faYoutube } from "@fortawesome/free-brands-svg-icons";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 
-require('../css/Member.css');
+require('../../css/Member.css');
 
 export default function Member(props) {
     let memberColor = null;
