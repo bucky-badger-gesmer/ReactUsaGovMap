@@ -164,6 +164,20 @@ export default function TableInfo(props) {
         }
     }
 
+    const committeesDisplay = committees && committees.length > 0 ? (
+        <div>
+            <h2 style={{ margin: '10px' }}>Committees:</h2>
+            {committees}
+        </div>
+    ) : null;
+
+    const subcommitteesDisplay = subcommittees && subcommittees.length > 0 ? (
+        <div>
+            <h2 style={{ margin: '10px' }}>Subcommittees:</h2>
+            {subcommittees}
+        </div>
+    ) : null;
+
     return (
         <div style={{ height: 400, width: '95%', margin: 'auto', marginTop: '50px' }} className={classes.root}>
             <DataGrid
@@ -181,12 +195,10 @@ export default function TableInfo(props) {
                 </Modal.Header>
                 <Modal.Body>
                     {selectedMember && <Member member={selectedMember} mapColor={color} />}
-                    <h2 style={{ margin: '10px' }}>Committees:</h2>
-                    {committees}
-                    <h2 style={{ margin: '10px' }}>Subcommittees:</h2>
-                    {subcommittees}
+                    {committeesDisplay}
+                    {subcommitteesDisplay}
                     <h2 style={{ margin: '10px' }}>Cosponsored Bills:</h2>
-                    {cosponsoredBills}
+                    {cosponsoredBills ? cosponsoredBills : 'Loading...'}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose} style={{ backgroundColor: color }}>
