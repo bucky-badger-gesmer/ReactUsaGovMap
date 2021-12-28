@@ -3,8 +3,14 @@
 
 # Pull Down Repo, and run:
 `npm install`
-
 `npm run start`
+
+## Add a .env file at the root directory with the following contents:
+```
+REACT_APP_API_KEY=<replace_with_your_api_key>
+REACT_APP_CURRENT_CONGRESS=117
+```
+
 ## App will run on `http://localhost:3000`
 
 ## Enjoy!
