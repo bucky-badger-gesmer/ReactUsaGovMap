@@ -1,5 +1,5 @@
-const API_KEY = 'jGxfPjMYvOkeKZX2YlPvaK4FctW2Vzj1Makj66vR';
-export const CURRENT_CONGRESS = 117;
+const API_KEY = process.env.REACT_APP_API_KEY;
+export const CURRENT_CONGRESS = process.env.REACT_APP_CURRENT_CONGRESS;
 
 export const states = {
     AL: 'Alabama',
@@ -99,7 +99,7 @@ export const getSpecificMemberCosponsoredBills = (memberId, billType) => {
 const apiCall = (url) => {
     return fetch(url, {
         headers: {
-            'x-api-key': API_KEY
+            'x-api-key': encodeURIComponent(API_KEY)
         }
     }).then(resp => resp.json());
 };
