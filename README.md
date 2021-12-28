@@ -3,6 +3,7 @@
 
 # Pull Down Repo, and run:
 `npm install`
+
 `npm run start`
 
 ## Add a .env file at the root directory with the following contents:
